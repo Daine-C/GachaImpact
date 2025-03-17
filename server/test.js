@@ -11,7 +11,7 @@ const port = 3001;
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
 // Middleware
-app.use(cors({ credentials: true, origin: "http://localhost:5173" })); // Update if using Vite
+app.use(cors({ credentials: true, origin: ["http://localhost:5173","https://5r3pbz5b50dr.share.zrok.io"]})); // Update if using Vite
 app.use(express.json());
 app.use(cookieParser());
 
@@ -38,6 +38,14 @@ const db = mysql.createPool({
     process.exit(1);
   }
 })();
+
+app.get('/', (req, res) => {
+  res.send('Backend server is running!');
+});
+
+// app.listen(3001, () => {
+//   console.log("Server running on port 3001");
+// });
 
 app.post("/api/signup", async (req, res) => {
   const { ign, group } = req.body;

@@ -1,3 +1,5 @@
+import { defineConfig } from 'vite';
+
 import path from 'path';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { VitePWA } from 'vite-plugin-pwa';
@@ -90,8 +92,10 @@ const manifest = {
 	}
 };
 
-/** @type {import('vite').UserConfig} */
-const config = {
+// /** @type {import('vite').UserConfig} */
+// const config = {
+
+export default defineConfig({
 	plugins: [
 		imagetools(),
 		sveltekit(),
@@ -115,7 +119,13 @@ const config = {
 	build: {
 		chunkSizeWarningLimit: 350,
 		target: ['es2020']
-	}
-};
+	},
+	server: {
+		proxy: {
+		  '/api': 'http://localhost3001', // Your backend API
+		},
+	  }, 
+});
 
-export default config;
+
+// export default config;
