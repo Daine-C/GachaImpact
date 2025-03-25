@@ -93,7 +93,6 @@ const manifest = {
 };
 
 // /** @type {import('vite').UserConfig} */
-// const config = {
 
 export default defineConfig({
 	plugins: [
@@ -122,10 +121,41 @@ export default defineConfig({
 	},
 	server: {
 		proxy: {
-		  '/api': 'http://localhost3001', // Your backend API
+		  '/api': {
+			target: 'http://localhost:3001', // Your backend API
+			changeOrigin: true,
+			secure: false,
+		  }
 		},
 	  }, 
 });
 
+
+// const config = {
+// 	plugins: [
+// 		imagetools(),
+// 		sveltekit(),
+// 		MdPlugin({ mode: 'html' }),
+// 		VitePWA({
+// 			strategies: 'injectManifest',
+// 			srcDir: 'src',
+// 			outDir: '.vercel/output/static',
+// 			filename: 'sw.js',
+// 			registerType: 'prompt',
+// 			manifestFilename: 'appmanifest.json',
+// 			manifest
+// 		})
+// 	],
+// 	resolve: {
+// 		alias: {
+// 			$post: path.resolve(__dirname, './src/post'),
+// 			'@images': path.resolve(__dirname, './src/images')
+// 		}
+// 	},
+// 	build: {
+// 		chunkSizeWarningLimit: 350,
+// 		target: ['es2020']
+// 	}
+// };
 
 // export default config;
