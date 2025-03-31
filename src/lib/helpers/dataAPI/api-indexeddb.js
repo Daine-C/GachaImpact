@@ -2,7 +2,6 @@ import { browser } from '$app/environment';
 import { openDB } from 'idb';
 import { storageLocal } from './api-localstore';
 
-
 const version = 5;
 const DBName = 'WishSimulator';
 
@@ -79,8 +78,12 @@ export const HistoryManager = {
 		sortedBanners.forEach((bannerName) => {
 			groupedEntries[bannerName] = { // Initialize item ID and action state
 				item: [], 
-				action: "skipped"
+				action: "skipped",
+				defeat: false
 			};
+			getBoss(bannerName).then((result) => {
+				groupedEntries[bannerName].defeat = result;
+			});
 		});
 
 		// Use IDBKeyRange.bound to retrieve entries  for multiple bannerNames
@@ -129,7 +132,7 @@ export const HistoryManager = {
 
 	async getByName(name) {
 		return (await IndexedDB).getAllFromIndex('history', 'name', name);
-	},
+	},	
 
 	async clearHistory(banner) {
 		try {
@@ -169,6 +172,11 @@ export const HistoryManager = {
 		const remove = await idb.delete('history', id);
 		return remove;
 	}
+};
+
+async function getBoss(banner) {
+	const boss = storageLocal.get('boss');
+	return boss[banner] !== undefined ? boss[banner] : false;;
 };
 
 // Assets Manager
