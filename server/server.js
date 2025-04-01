@@ -11,7 +11,31 @@ const port = 3001;
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
 // Middleware
-app.use(cors({ credentials: true, origin: "http://localhost:5173" })); // Update if using Vite
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://192.168.254.193"
+];
+
+app.use(cors({  
+  credentials: true,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, Postman)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  exposedHeaders: ['Authorization']  // Needed for JWT in some cases
+}));
+app.use((req, res, next) => {
+  console.log("Incoming Origin:", req.headers.origin);
+  next();
+});
 app.use(express.json());
 app.use(cookieParser());
 
@@ -58,7 +82,7 @@ app.post("/api/signup", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      sameSite: "strict",
+      sameSite: "Lax",
       maxAge: 3 * 60 * 60 * 1000,
     });
 

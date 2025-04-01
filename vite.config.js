@@ -120,14 +120,16 @@ export default defineConfig({
 		target: ['es2020']
 	},
 	server: {
+		host: '0.0.0.0',
+		port: '5173',
 		proxy: {
-		  '/api': {
-			target: 'http://localhost:3001', // Your backend API
-			changeOrigin: true,
-			secure: false,
-		  }
-		},
+			'/api': {
+        	target: 'http://localhost:3001',
+        	changeOrigin: true,
+        	rewrite: (path) => path.replace(/^\/api/, '')
+		}
 	  }, 
+	}	
 });
 
 
