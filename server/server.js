@@ -12,12 +12,10 @@ const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
 
 // Middleware
 const allowedOrigins = [
-  "http://localhost:5173",
-  "http://192.168.254.193"
+  '*'
 ];
 
 app.use(cors({  
-  credentials: true,
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps, curl, Postman)
     if (!origin) return callback(null, true);

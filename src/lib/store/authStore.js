@@ -7,9 +7,7 @@ export const loading = writable(false); // Tracks loading state
 export async function checkSession() {
   loading.set(true); // Start loading
   try {
-    const res = await fetch("http://localhost:3001/api/session", {
-      credentials: "include",
-    });
+    const res = await fetch("http://localhost:3001/api/session");
 
     if (res.status === 401 || res.status === 403) {
       throw new Error("Session expired or invalid");
@@ -34,8 +32,7 @@ export async function checkSession() {
 export async function logout() {
   try {
     const res = await fetch("http://localhost:3001/api/logout", {
-      method: "POST",
-      credentials: "include",
+      method: "POST"
     });
 
     if (!res.ok) {
