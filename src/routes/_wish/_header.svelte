@@ -46,7 +46,7 @@
 
 		await factoryReset({ clearCache: true, keepSetting: false });
 		// Logout the user
-		await axios.post("http://localhost:3001/api/logout", { banner_data }, { withCredentials: true });
+		await axios.post("http://localhost:3001/api/logout", { banner_data });
 		
 		// Reset session data
 		user.set(null);
@@ -76,7 +76,7 @@
 	};
 
 	const statusBoss = async (bossStatus) => {
-		await axios.post("http://localhost:3001/api/boss", { bossStatus }, { withCredentials: true });
+		await axios.post("http://localhost:3001/api/boss", { bossStatus });
 	} 
 
 	const chatToggle = getContext('chatToggle');
