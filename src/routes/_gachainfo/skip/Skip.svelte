@@ -73,8 +73,6 @@
 		const { patch: version, phase: activePhase } = $activeVersion;
 		navigate('index');
 		if (activePhase === phase && version === patch) return;
-
-		buttons.set($bannerList, { history: $history, inventory: $inventory, shop: $shop, pull_roll: $pull_roll, details: $details });
 		
 		userCurrencies.currReplenish($user?.group, bannerName);
 		storageLocal.set('exchanges', 0);

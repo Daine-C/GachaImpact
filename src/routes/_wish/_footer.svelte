@@ -16,12 +16,15 @@
 		preloadVersion,
 		editID,
 		chronicledCourse,
+		activeBanner,
+		bannerList,
 		history, inventory, shop
 	} from '$lib/store/app-stores';
 	import { playSfx } from '$lib/helpers/audio/audio';
 	import { isNewOutfitReleased } from '$lib/helpers/outfit';
 	import { localBanner, maintenance } from '$lib/helpers/banner-custom';
 	import { pushToast } from '$lib/helpers/toast';
+	import { buttons } from '$lib/helpers/dataAPI/api-localstore';
 
 	import Icon from '$lib/components/Icon.svelte';
 	import NoticeMark from '$lib/components/NoticeMark.svelte';
@@ -47,13 +50,14 @@
 
 	const navigate = getContext('navigate');
 	const changePage = (page) => {
+		const bannerName = $bannerList[$activeBanner].bannerName;
 		navigate(page);
 		if (['inventory', 'history'].includes(page)) {
-			(page === 'history') ? history.update((h) => h + 1) : inventory.update((i) => i + 1);
+			(page === 'history') ? buttons.set(bannerName, 'history') : buttons.set(bannerName, 'inventory');
 			return playSfx(page);
 		}
 		if (page === 'shop') {
-			shop.update((s) => s + 1);
+			buttons.set(bannerName, 'shop');
 			return playSfx('shopopen');
 		}
 		return playSfx();

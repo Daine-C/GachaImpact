@@ -14,7 +14,7 @@
 		starglitter,
 		customData, pull_roll
 	} from '$lib/store/app-stores';
-	import { localBalance, localConfig } from '$lib/helpers/dataAPI/api-localstore';
+	import { buttons, localBalance, localConfig } from '$lib/helpers/dataAPI/api-localstore';
 	import { APP_TITLE } from '$lib/env';
 	import { playSfx } from '$lib/helpers/audio/audio';
 	import WISH, { roll } from '$lib/helpers/gacha/Wish';
@@ -65,6 +65,7 @@
 	let onWish = getContext('onWish');
 
 	const doRoll = async (count, bannerToRoll) => {
+		const bannerName = $bannerList[$activeBanner].bannerName;
 		rollCount = count;
 		multi = count > 1;
 		const tmp = [];
@@ -73,7 +74,7 @@
 		if (!isUnlimited && rollCost > currencyUsed) return (showConvertModal = true);
 		const indexOfCharBanner = bannerToRoll === 'character-event' ? getIndexOfCharBanner() : 0;
 		onWish.set(true);
-		pull_roll.update(((p) => p + 1));
+		buttons.set(bannerName, 'pull_roll');
 
 		for (let i = 0; i < count; i++) {
 
