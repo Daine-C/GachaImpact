@@ -41,8 +41,8 @@
 	$: isEvent = bannerType.match(/(event|chronicled)/);
 	$: balance = isEvent ? $intertwined : $acquaint;
 	$: unlimitedWish = $wishAmount === 'unlimited';
-	$: {if (!$bannerList[$activeBanner]?.bannerName == 'farewell-of-snezhnaya-5') {
-		setBalance($bannerList, { primos: $primogem, fates: $intertwined }, "start");  
+	$: {if ($bannerList[$activeBanner]?.bannerName != 'farewell-of-snezhnaya-5') {
+		setBalance($bannerList, { primos: $primogem, fates: $intertwined }, "start"); 
 		}}
 
 
