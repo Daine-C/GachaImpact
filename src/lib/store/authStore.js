@@ -1,6 +1,7 @@
 import { get, writable } from "svelte/store";
 import { primogem, intertwined, bannerList } from "./app-stores";
 import { storageLocal } from "$lib/helpers/dataAPI/api-localstore";
+import axios from 'axios';
 import { setBalance } from "$lib/helpers/gacha/historyUtils";
 
 export const user = writable(null); // Stores the logged-in user session
@@ -8,18 +9,18 @@ export const isAuthenticated = writable(false); // Tracks session status
 
 export async function checkSession() {
   try {
-    const res = await fetch("http://localhost:3001/api/session", {
-      credentials: "include",
+    const res = await axios.get("/api/session", { 
+      withCredentials: true 
     });
-    if (!res.ok) throw new Error("Session not found");
-
-    const data = await res.json();
+    
+    const data = res.data;
     user.set(data);
     isAuthenticated.set(true);
 
     const group = data.group;
-    const isAdded = JSON.stringify(storageLocal.get("added"));
-    if (isAdded === "{}" && (group === "whale" || group === "dolphin")) {
+    const isAdded = storageLocal.get("added");
+    
+    if (isAdded != 1 && (group === "whale" || group === "dolphin")) {
       primogem.update((v) => v + 5120);
       storageLocal.set('added', 1);
       setBalance(get(bannerList), { primos: get(primogem), fates: get(intertwined) }, "start");
@@ -29,4 +30,4 @@ export async function checkSession() {
     console.error("Session check failed:", error);
     isAuthenticated.set(false);
   }
-};
+}

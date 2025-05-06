@@ -113,8 +113,14 @@
 			let boss = storageLocal.get('boss')
 			for(let ban of banner){
 				if(!boss[ban]) {
-					openObtained([{ item: 'primogem', qty: 800 }]);
-					primogem.update((n) => n + 800)
+					if(banner.length >= 2){
+						openObtained([{ item: 'primogem', qty: 900 }]);
+						primogem.update((n) => n + 450)
+					}
+					else{
+						openObtained([{ item: 'primogem', qty: 900 }]);
+						primogem.update((n) => n + 900)
+					}
 				}	
 			}
 		} 
@@ -172,8 +178,8 @@
 
 	.background-gif {
 		align-items: center;
-		height: 380px;
-		width: 1000px;
+		height: 680px;
+		width: 1200px;
 		top: 0;
 		object-fit: cover;
 		object-position: top center;
