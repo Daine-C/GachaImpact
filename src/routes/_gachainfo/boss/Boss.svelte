@@ -66,7 +66,6 @@
 		window.open("https://docs.google.com/forms/d/e/1FAIpQLSeusgimnGTzQu70nxdBPnVptGYKSMN7vCGqU1_I4VE_fHMxWA/viewform?usp=header","_blank");
 		
 		setBalance($bannerList, { primos: $primogem, fates: $intertwined, crysts: $genesis }, "end");
-		buttons.set($bannerList, { history: $history, inventory: $inventory, shop: $shop, pull_roll: $pull_roll, details: $details });
 
 		let banner_data = await generateFileString();
 
