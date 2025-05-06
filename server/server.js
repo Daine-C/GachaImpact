@@ -1,25 +1,30 @@
+// import { handler } from './build/handler.js'
 const express = require('express');
 const mysql = require('mysql2');
 const cors = require('cors');
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv");
 
-dotenv.config();
 const app = express();
 const port = 3001;
 const SECRET_KEY = process.env.JWT_SECRET || "your_secret_key";
-let check = false;
+// let check = false;
 
 // Middleware
-app.use(cors({ credentials: true, origin: "http://localhost:5173" })); // Update if using Vite
+app.use(cors({ origin: ["http://localhost:5173",
+                        "http://192.168.1.7",
+                        "http://192.168.1.7:3000"],
+               methods: ["GET", "POST"],
+               credentials: true})); // Update if using Vite
 app.use(express.json());
 app.use(cookieParser());
+
 
 // MySQL Connection
 const db = mysql.createPool({
   host: "localhost",
   user: "root",
+  // password: "2020-0586",
   password: "1234",
   database: "simdb",
   waitForConnections: true,
@@ -58,10 +63,12 @@ app.post("/api/signup", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
+      secure: false, // Use HTTPS in production
       sameSite: "strict",
       maxAge: 3 * 60 * 60 * 1000,
     });
+
+    console.log("Session Active:", {id: result.insertId, ign, group}); // Log the active session details
 
     res.status(201).json({ message: "Signup successful", id: result.insertId });
   } catch (err) {
@@ -108,14 +115,11 @@ app.get("/api/session", (req, res) => {
       console.log("Invalid session:", err.message);
       return res.status(403).json({ error: "Invalid session" });
     }
-
-    if (!check) {
-      console.log("Session Active:", user);
-      check = true;    
-    } // Log the active session details
     res.json(user);
   });
 });
+
+// app.use(handler);
 
 // Start Server
 app.listen(port, () => {
