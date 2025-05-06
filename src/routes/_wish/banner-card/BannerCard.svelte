@@ -54,7 +54,7 @@
 	const navigate = getContext('navigate');
 	const openDetails = () => {
 		navigate('details');
-		details.update((d) => d + 1);
+		buttons.set(bannerName, 'details');
 		return playSfx();
 	};
 
