@@ -7,6 +7,7 @@
 	import {
 		activeVersion
 	} from '$lib/store/app-stores';
+	import { buttons } from '$lib/helpers/dataAPI/api-localstore';
 
 	import FrameBeginner from './_frame-beginner.svelte';
 	import FrameCharacter from './_frame-character.svelte';
@@ -54,7 +55,7 @@
 	const navigate = getContext('navigate');
 	const openDetails = () => {
 		navigate('details');
-		details.update((d) => d + 1);
+		buttons.set(bannerName, 'details');
 		return playSfx();
 	};
 
@@ -236,7 +237,7 @@
 	.card :global(.skeleton) {
 		aspect-ratio: 738.55/382.95;
 	}
-	.card :global(h1 .block) {
+	.card :global(h1 .b	k) {
 		display: block;
 	}
 

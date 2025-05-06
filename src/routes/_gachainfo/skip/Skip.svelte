@@ -68,18 +68,15 @@
 	const skipBanner = () => {
         playSfx();
 		setBalance($bannerList, { primos: $primogem, fates: $intertwined, crysts: $genesis }, "end");
+		userCurrencies.currReplenish($user?.group, bannerName);
 		// If select the same banner with the active one, change nothing just back to index
         console.log("Skipping to:", patch, phase); // Debug log
 		const { patch: version, phase: activePhase } = $activeVersion;
 		navigate('index');
 		if (activePhase === phase && version === patch) return;
-
-		buttons.set($bannerList, { history: $history, inventory: $inventory, shop: $shop, pull_roll: $pull_roll, details: $details });
 		
-		userCurrencies.currReplenish($user?.group, bannerName);
 		storageLocal.set('exchanges', 0);
 		storageLocal.set('expenses', 0);
-
 
 		resetStore();
 		// Select a banner
